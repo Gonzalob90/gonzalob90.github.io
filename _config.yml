@@ -109,13 +109,13 @@ analytics:
 author:
   name             : "Gonzalo Barrientos"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "M.Sc. in Machine Learning from University College London interested in Representation, Learning, Reinforcement Learning and Grounding Language"
+  bio              : "M.Sc. in Machine Learning from University College London interested in Representation Learning, Reinforcement Learning and Grounding Language"
   location         : "London, UK"
   email            : "gonzalo.b90@gmail.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: mailto:gonzalo.b90@email.com
+      #url: mailto:gonzalo.b90@email.com
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
@@ -128,9 +128,9 @@ author:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/gonzalob90"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url: "https://instagram.com/"
+    - label: "Linkedin"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/gonzalobarrientos"
 
 # Site Footer
 footer:
