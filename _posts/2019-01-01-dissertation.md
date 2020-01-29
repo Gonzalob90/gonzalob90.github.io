@@ -42,6 +42,13 @@ $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta
 
 $$\mathcal{L}_{new}(\theta,\phi,x) = \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\sA_{i} | x) \Vert p(\mathbb{A}_{i}) big]\ $$
 
+$$\begin{equation}
+\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) + \alpha \sum_{x \in X} p(X=x) \max_{i}\infdiv{q_{\phi}(\sA_{i} \given x)}{p(\sA_{i})}) 
+\end{equation}$$
+
+\begin{equation}
+\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) + \alpha \sum_{x \in X} p(X=x) \max_{i}\infdiv{q_{\phi}(\sA_{i} \given x)}{p(\sA_{i})}) 
+\end{equation}
 
 $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
