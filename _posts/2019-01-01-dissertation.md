@@ -27,3 +27,5 @@ Python code block:
 Here's some math:
 $$z= x+y$$
 
+$$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{\E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - \KL ( q_{\phi}( z | x) \Vert p (z))}_{\mathcal{L}_{elbo}}- \underbrace{\alpha \infdiv{q_{\phi}(\sA_{w} | x)}{p( \sA_{w}) } }_{\alpha*\text{Imax}}$$
+
