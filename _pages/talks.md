@@ -3,6 +3,9 @@ title: "Talks"
 permalink: /talks/
 ---
 
-Space for the talks
+## Neurips 2018 (Montreal)
+### Workshop: LatinX in AI
 
-{% include video id="XsxDH4HcOWA" provider="youtube" %}
+Oral Presentation: Non-Synergistic Variational AutoEncoders
+
+{% include video id="JzJxnoS2_Vc" provider="youtube" %}
