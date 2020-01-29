@@ -8,8 +8,6 @@ mathjax: "true"
 
 # H1 heading
 
-## H2 heading
-
 ### H3 heading
 
 Basic text
@@ -17,6 +15,11 @@ Basic text
 What about a [link](https://google.com)
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/population.png" alt="population coding">
+
+The intuition behind this metric is that synergy should be defined as the "whole beyond the 
+maximum of its parts". The whole is described as the mutual information between the joint $\textbf{X}$ 
+and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
+that any of the sources $\sA_{i}$ provided about each outcome. Formally, this is stated as:
 
 $$\require{physics}$$
 
@@ -37,7 +40,9 @@ def i_max(indices, mu, log_var):
 
 $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
 
+$$\mathcal{L}_{new}(\theta,\phi,x) = \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\sA_{i} | x) \Vert p(\mathbb{A}_{i}) big]\ $$
 
-$$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{w} | x) \Vert p(\mathbb{A}_{w})\big]\ }_{\alpha*\text{Imax}}$$
+
+$$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/nips_latents.png" alt="results">
