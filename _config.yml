@@ -108,7 +108,7 @@ analytics:
 # Site Author
 author:
   name             : "Gonzalo Barrientos"
-  avatar           :  "images/bio-photo.jpg"
+  avatar           :  "images/bio-photo.jpeg"
   bio              : "M.Sc. in Machine Learning from University College London interested in Representation Learning, Reinforcement Learning and Grounding Language"
   location         : "London, UK"
   email            : "gonzalo.b90@gmail.com"
