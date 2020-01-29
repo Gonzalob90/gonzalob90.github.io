@@ -16,19 +16,20 @@ Basic text
 
 What about a [link](https://google.com)
 
-
-Here's some math:
+<img src="{{ site.url }}{{ site.baseurl }}/images/population.png" alt="population coding">
 
 $$\require{physics}$$
+
+$$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(\bm{X}; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\ } $$
 
 $$ I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} 
                   = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\ $$
                   
 ```python
-def i_max(index, mu, log_var):
+def i_max(indices, mu, log_var):
 
-    mu_syn = mu[:, index]
-    log_var_syn = log_var[:, index]
+    mu_syn = mu[:, indices]
+    log_var_syn = log_var[:, indices]
     i_max = kl_div(mu_syn, log_var_syn)
 
     return i_max
