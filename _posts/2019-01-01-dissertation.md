@@ -1,6 +1,6 @@
 ---
 title: "Dissertation: Non-Synergistic VAE"
-date:
+date: 2019-01-01
 tags: [generative modeling, variational inference]
 excerpt: "Generative Modeling, Variational Inference"
 mathjax: "true"
