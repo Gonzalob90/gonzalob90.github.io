@@ -16,20 +16,23 @@ Basic text
 
 What about a [link](https://google.com)
 
-Python code block:
-```python
-    import numpy as np
-    def test_function(x,y)
-        z = np.sum(x,y)
-
-```
 
 Here's some math:
 
 $$\require{physics}$$
 
 $$ I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} 
-                  = KL \big[\ P(\mathbb{A}_{i} | y) \vert P(\mathbb{A}_{i}) \big]\ $$
+                  = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\ $$
+                  
+```python
+def i_max(index, mu, log_var):
+
+    mu_syn = mu[:, index]
+    log_var_syn = log_var[:, index]
+    i_max = kl_div(mu_syn, log_var_syn)
+
+    return i_max
+```
 
 $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
 
