@@ -27,7 +27,8 @@ $$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(\bm{X}; Y) - \sum_{y \in Y} p(Y=y) \
 
 $$\begin{align}
 I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} \\
-                  = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\ $$
+                  = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\ 
+                  \end(align)$$
                   
 ```python
 def i_max(indices, mu, log_var):
@@ -43,7 +44,7 @@ $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta
 
 $$\begin{align}
 \mathcal{L}_{new}(\theta,\phi,x) &= \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \nonumber \\
-& \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\sA_{i} | x)}{p(\sA_{i})}) 
+& \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\sA_{i} | x){p(\sA_{i})}) 
 \end{align}$$
 
 $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
