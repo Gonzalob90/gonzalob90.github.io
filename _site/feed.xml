@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-30T19:52:03+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/dissertation/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/dissertation</id><content type="html" xml:base="http://localhost:4000/dissertation/">&lt;h1 id=&quot;h1-heading&quot;&gt;H1 heading&lt;/h1&gt;
+
+&lt;h3 id=&quot;h3-heading&quot;&gt;H3 heading&lt;/h3&gt;
+
+&lt;p&gt;Basic text&lt;/p&gt;
+
+&lt;p&gt;Our world is hierarchical and compositional, humans can generalise better since we use primitive
+concepts that allow us to create complex representations (Higgins et al. (2016)).&lt;br /&gt;
+Towards the creation of truly intelligent systems, they should learn in a similar way resulting in an 
+increase of their performance since they would capture the underlying factors of variation of the data 
+( Bengio et al.(2013); Hassabis et al. (2017); Botvinick et al. (2017)).&lt;/p&gt;
+
+&lt;p&gt;According to Lake et al. (2016), a compositional representation should create new elements from 
+the combination of primitive concepts resulting in a infinite number of new representations.  For 
+example if our model is trained with images of white wall and then is presented a boy with a white 
+shirt, it should identify the color white as a primitive element.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, a disentangled representation has been interpreted in different ways, for instance Bengio et al. (2013) 
+define it as one where single latent variables are sensitive to changes in generative factors, while being 
+invariant to changes in other factors.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
+I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
+\end{equation}&lt;/script&gt;
+
+&lt;p&gt;What about a &lt;a href=&quot;https://google.com&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/population.png&quot; alt=&quot;population coding&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The intuition behind this metric is that synergy should be defined as the “whole beyond the 
+maximum of its parts”. The whole is described as the mutual information between the joint $\textbf{X}$ 
+and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
+that any of the sources $\sA_{i}$ provided about each outcome. Formally, this is stated as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{physics}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
+Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
+\end{equation}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\&lt;/script&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;i_max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kl_div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;test&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mathcal{L}_{new}(\theta,\phi,x) &amp;= \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \nonumber \\
+&amp; \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\mathbb{A}_{i} | x){p(\mathbb{A}_{i})}) 
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/nips_latents.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;</content><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><category term="generative modeling" /><category term="variational inference" /><summary type="html">Generative Modeling, Variational Inference</summary></entry></feed>
