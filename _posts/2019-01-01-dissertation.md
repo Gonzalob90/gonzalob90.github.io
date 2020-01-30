@@ -28,7 +28,7 @@ $$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{
 $$\begin{align}
 I(\mathbb{A}_{i};Y=y) &= \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} \\
                   &= KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\                   
-\end(align)$$
+\end{align}$$
                   
 ```python
 def i_max(indices, mu, log_var):
