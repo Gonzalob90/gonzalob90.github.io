@@ -7,17 +7,15 @@ excerpt: "Generative Modeling, Variational Inference"
 mathjax: "true"
 ---
 
-# H1 heading
+### Work presented at NeurIPS 2018, Workshop LatinX in AI
 
-### H3 heading
 
-Basic text
 
 Our world is hierarchical and compositional, humans can generalise better since we use primitive
 concepts that allow us to create complex representations (Higgins et al. (2016)).  
 Towards the creation of truly intelligent systems, they should learn in a similar way resulting in an 
 increase of their performance since they would capture the underlying factors of variation of the data 
-( Bengio et al.(2013); Hassabis et al. (2017); Botvinick et al. (2017)).  
+( Bengio et al.(2013); Hassabis et al. (2017)).  
 
 According to Lake et al. (2016), a compositional representation should create new elements from 
 the combination of primitive concepts resulting in a infinite number of new representations.  For 
@@ -28,10 +26,26 @@ Furthermore, a disentangled representation has been interpreted in different way
 define it as one where single latent variables are sensitive to changes in generative factors, while being 
 invariant to changes in other factors.  
 
+The original Variational auto-encoder (VAE) framework (Kingma & Welling (2013); Rezende et al.(2014)) has been used 
+extensively for the task of disentanglement by modifying the original ELBO formulation; for instance β-VAE, presented in Higgins et al. (2017a), 
+increases the latent capacity by penalising the KL divergence term with a β hyperparameter.
+
+$$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
+
+$$\mathcal{L}_{\beta-vae}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - \beta * KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
+
+We proposed a new approach for the task mentioned above which, inspired in the concepts from neuroscience and information theory, penalises 
 
 $$\begin{equation}
 I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
 \end{equation}$$
+
+For neural codes there are three types of independence when it comes to the relation between stimuli
+and responses; which are the activity independence, the conditional independence and the information 
+independence.  One of the first measures of synergy for sets of sources of information came from 
+this notion of independence. In Williams & Beer (2010) it is stated that if the responses come 
+from different features of the stimulus, the information encoded in those responses should be added 
+to estimate the mutual information they provide about the stimulus. Formally:
 
 What about a [link](https://google.com)
 
@@ -42,16 +56,38 @@ maximum of its parts". The whole is described as the mutual information between 
 and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
 that any of the sources $\sA_{i}$ provided about each outcome. Formally, this is stated as:
 
-$$\require{physics}$$
-
-$$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\ $$
+However, we just saw in the previous sections that theI(S;R1)andI(S;R2)could be decomposed 
+in their unique and redundant and synergistic terms. Intuitively, this formulation only holds if there 
+is no redundant or synergistic information present; which means in the context of population coding 
+that the responses encoded different parts of the stimulus. If the responses R1 and R2 convey more 
+information together than separate, we can say we have synergistic information; if the information 
+is less, we have redundant information. That’s the reason why in Gat & Tishby (1998), the synergy 
+is considered as measure of information independence
 
 $$\begin{equation}
 Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 \end{equation}$$
 
+<img src="{{ site.url }}{{ site.baseurl }}/images/synergy_3_latens.png" alt="results">
+
+
+$$\require{physics}$$
+
+n: Number of individual predictors $X_{i}$
+$\sA_{i}$ : subset of individual predictors (ie. $A_{i} = \{X_{1},X_{3}\}$)
+\textbf{X}: Joint random variable of all individual predictors $X_{1}X_{2}..X_{n}$
+$\{X_{1},X_{2},...,X_{n}\}$: Set of all the individual predictors
+Y: Random variable to be predicted
+y: A particular outcome of Y.
+
+
+
+$$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\ $$
+
 $$ I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\ $$
-                  
+
+
+     
 ```python
 def i_max(indices, mu, log_var):
 
@@ -61,7 +97,10 @@ def i_max(indices, mu, log_var):
 
     return i_max
 ```
-test
+
+$$\begin{equation}
+KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
+\end{equation}$$
 
 $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
 
@@ -72,4 +111,18 @@ $$\begin{align}
 
 $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/nips_latents.png" alt="results">
+<img src="{{ site.url }}{{ site.baseurl }}/images/traversal_mean_white.png" alt="results">
+
+### References:
+
+* Irina Higgins, Loıc Matthey, Xavier Glorot, Arka Pal, Benigno Uria, Charles Blundell, Shakir Mohamed,  and Alexander Lerchner.  Early visual concept learning with unsupervised deep learning.CoRR, abs/1606.05579, 2016
+
+* Brenden M. Lake, Tomer D. Ullman, Joshua B. Tenenbaum, and Samuel J. Gershman.   Building machines that learn and think like people.CoRR, abs/1604.00289, 2016. URL http://arxiv.org/abs/1604.00289.
+
+* Loic Matthey, Irina Higgins, Demis Hassabis, and Alexander Lerchner.  dsprites:  Disentanglement testing sprites dataset. https://github.com/deepmind/dsprites-dataset/, 2017.
+
+* Diederik P. Kingma and Max Welling.   Auto-encoding variational bayes.CoRR, abs/1312.6114,2013. URL http://arxiv.org/abs/1312.6114.
+
+* Yoshua Bengio, Aaron C. Courville, and Pascal Vincent.   Representation learning:  A review and new perspectives.IEEE Trans. Pattern Anal. Mach. Intell.,  35(8):1798–1828,  2013.
+
+* Danilo Jimenez Rezende, Shakir Mohamed, and Daan Wierstra.   Stochastic backpropagation and approximate inference in deep generative models.  In Proceedings of the 31th International Conference on Machine Learning, ICML 2014. URL http://jmlr.org/proceedings/papers/v32/rezende14.html.

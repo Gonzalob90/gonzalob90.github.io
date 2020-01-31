@@ -108,8 +108,8 @@ analytics:
 # Site Author
 author:
   name             : "Gonzalo Barrientos"
-  avatar           :  "images/bio_photo.jpeg"
-  bio              : "Machine Learning Engineer \n at Clyde & Co."
+  avatar           :  "images/photo_gonzalo.png"
+  bio              : "ML Engineer at Clyde & Co."
   location         : "London, UK"
   email            : "gonzalo.b90@gmail.com"
   links:
