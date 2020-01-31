@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-31T10:36:27+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-31T11:57:28+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
 
 &lt;p&gt;Our world is hierarchical and compositional, humans can generalise better since we use primitive
 concepts that allow us to create complex representations (Higgins et al. (2016)).&lt;br /&gt;
@@ -23,11 +23,17 @@ increases the latent capacity by penalising the KL divergence term with a β hyp
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{\beta-vae}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - \beta * KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\&lt;/script&gt;
 
-&lt;p&gt;We proposed a new approach for the task mentioned above which, inspired in the concepts from neuroscience and information theory, penalises&lt;/p&gt;
+&lt;p&gt;We proposed a new approach for the task of disentanglement, where we achieve state-of-the-art results by penalizing the synergistic mutual 
+information within the latents we encourage information independence and by doing that disentangle the latent factors. It is worth noting that our model draws inspiration
+from population coding, a field from neuroscience, where the notion of synergy arises.&lt;/p&gt;
+
+&lt;h2 id=&quot;synergy&quot;&gt;Synergy&lt;/h2&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
 I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
 \end{equation}&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/2_variables.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;For neural codes there are three types of independence when it comes to the relation between stimuli
 and responses; which are the activity independence, the conditional independence and the information 
@@ -35,8 +41,6 @@ independence.  One of the first measures of synergy for sets of sources of infor
 this notion of independence. In Williams &amp;amp; Beer (2010) it is stated that if the responses come 
 from different features of the stimulus, the information encoded in those responses should be added 
 to estimate the mutual information they provide about the stimulus. Formally:&lt;/p&gt;
-
-&lt;p&gt;What about a &lt;a href=&quot;https://google.com&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/population.png&quot; alt=&quot;population coding&quot; /&gt;&lt;/p&gt;
 
@@ -59,14 +63,16 @@ Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/synergy_3_latens.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{physics}&lt;/script&gt;
+&lt;ul&gt;
+  &lt;li&gt;n: Number of individual predictors &lt;script type=&quot;math/tex&quot;&gt;X_{i}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\mathbb{A}_{i}&lt;/script&gt; : subset of individual predictors (ie. &lt;script type=&quot;math/tex&quot;&gt;A_{i} = \{X_{1},X_{3}\}&lt;/script&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;X&lt;/strong&gt;: Joint random variable of all individual predictors &lt;script type=&quot;math/tex&quot;&gt;X_{1}X_{2}..X_{n}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\{X_{1},X_{2},...,X_{n}\}&lt;/script&gt;: Set of all the individual predictors&lt;/li&gt;
+  &lt;li&gt;Y: Random variable to be predicted&lt;/li&gt;
+  &lt;li&gt;y: A particular outcome of Y.&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;n: Number of individual predictors $X_{i}$
-$\sA_{i}$ : subset of individual predictors (ie. $A_{i} = {X_{1},X_{3}}$)
-\textbf{X}: Joint random variable of all individual predictors $X_{1}X_{2}..X_{n}$
-${X_{1},X_{2},…,X_{n}}$: Set of all the individual predictors
-Y: Random variable to be predicted
-y: A particular outcome of Y.&lt;/p&gt;
+&lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\&lt;/script&gt;
 
@@ -97,7 +103,7 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/traversal_mean_white.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+&lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;

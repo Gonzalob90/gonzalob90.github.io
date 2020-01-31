@@ -34,11 +34,19 @@ $$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta
 
 $$\mathcal{L}_{\beta-vae}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - \beta * KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
 
-We proposed a new approach for the task mentioned above which, inspired in the concepts from neuroscience and information theory, penalises 
+We proposed a new approach for the task of disentanglement, where we achieve state-of-the-art results by penalizing the synergistic mutual 
+information within the latents we encourage information independence and by doing that disentangle the latent factors. It is worth noting that our model draws inspiration
+from population coding, a field from neuroscience, where the notion of synergy arises.
+
+## Synergy
+
+
 
 $$\begin{equation}
 I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
 \end{equation}$$
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/2_variables.png" alt="results">
 
 For neural codes there are three types of independence when it comes to the relation between stimuli
 and responses; which are the activity independence, the conditional independence and the information 
@@ -47,7 +55,6 @@ this notion of independence. In Williams & Beer (2010) it is stated that if the 
 from different features of the stimulus, the information encoded in those responses should be added 
 to estimate the mutual information they provide about the stimulus. Formally:
 
-What about a [link](https://google.com)
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/population.png" alt="population coding">
 
@@ -68,18 +75,20 @@ $$\begin{equation}
 Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 \end{equation}$$
 
+
 <img src="{{ site.url }}{{ site.baseurl }}/images/synergy_3_latens.png" alt="results">
 
 
-$$\require{physics}$$
 
-n: Number of individual predictors $X_{i}$
-$\sA_{i}$ : subset of individual predictors (ie. $A_{i} = \{X_{1},X_{3}\}$)
-\textbf{X}: Joint random variable of all individual predictors $X_{1}X_{2}..X_{n}$
-$\{X_{1},X_{2},...,X_{n}\}$: Set of all the individual predictors
-Y: Random variable to be predicted
-y: A particular outcome of Y.
 
+* n: Number of individual predictors $$X_{i}$$
+* $$\mathbb{A}_{i}$$ : subset of individual predictors (ie. $$A_{i} = \{X_{1},X_{3}\}$$)
+* **X**: Joint random variable of all individual predictors $$X_{1}X_{2}..X_{n}$$
+* $$\{X_{1},X_{2},...,X_{n}\}$$: Set of all the individual predictors
+* Y: Random variable to be predicted
+* y: A particular outcome of Y.
+
+## Model
 
 
 $$ S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\ $$
@@ -113,7 +122,7 @@ $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/traversal_mean_white.png" alt="results">
 
-### References:
+## References:
 
 * Irina Higgins, Loıc Matthey, Xavier Glorot, Arka Pal, Benigno Uria, Charles Blundell, Shakir Mohamed,  and Alexander Lerchner.  Early visual concept learning with unsupervised deep learning.CoRR, abs/1606.05579, 2016
 
