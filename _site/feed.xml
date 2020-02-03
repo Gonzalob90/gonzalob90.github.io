@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-01-31T11:57:28+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-02-03T08:52:23+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
 
 &lt;p&gt;Our world is hierarchical and compositional, humans can generalise better since we use primitive
 concepts that allow us to create complex representations (Higgins et al. (2016)).&lt;br /&gt;
@@ -27,13 +27,68 @@ increases the latent capacity by penalising the KL divergence term with a β hyp
 information within the latents we encourage information independence and by doing that disentangle the latent factors. It is worth noting that our model draws inspiration
 from population coding, a field from neuroscience, where the notion of synergy arises.&lt;/p&gt;
 
-&lt;h2 id=&quot;synergy&quot;&gt;Synergy&lt;/h2&gt;
+&lt;h2 id=&quot;information-theory&quot;&gt;Information Theory&lt;/h2&gt;
+
+&lt;p&gt;First of all, we need a brief introduction to the field of information theory in order to understand the partial information decomposition, which it will lead us 
+to the importance of Synergy in our framework. First, we define the Mutual Information:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
-I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
+I(X;Y) = E_{p(x,y)} \bigg[\ \log \frac{p(x,y)}{p(x)p(y)}  \bigg]\ = K \big[\ p(x,y) \Vert p(x)p(y) \big]\
 \end{equation}&lt;/script&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/2_variables.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Now, we are going to introduce the Partial Information decomposition; following the notation from Williams &amp;amp; Beer (2010), let’s consider the random variable S and a random vector &lt;script type=&quot;math/tex&quot;&gt;R = \{R_{1}, R_{2}, .., R_{n}\}&lt;/script&gt;, being our goal to 
+decompose the information that the variable R provides about S; the contribution of these partial information 
+could come from one element (i.e. from &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt;) or from subsets of &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; (ie. &lt;script type=&quot;math/tex&quot;&gt;R_{1}, R_{2}&lt;/script&gt;). Considering the case with 
+two variables, &lt;script type=&quot;math/tex&quot;&gt;\{R_{1}, R_{2}\}&lt;/script&gt;, we could separate the partial mutual information in unique (&lt;script type=&quot;math/tex&quot;&gt;Unq(S; R_{1})&lt;/script&gt; 
+and &lt;script type=&quot;math/tex&quot;&gt;Unq(S; R_{2})&lt;/script&gt; ), the information that only &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;R_{2}&lt;/script&gt; provides about S; redundant (&lt;script type=&quot;math/tex&quot;&gt;Rdn(S; R_{1}, R_{2})&lt;/script&gt;), 
+which it could be provided by &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;R_{2}&lt;/script&gt;; and synergistic (&lt;script type=&quot;math/tex&quot;&gt;Syn(S; R_{1}, R_{2})&lt;/script&gt;), which is only 
+provided by the combination of &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;R_{2}&lt;/script&gt;. This decomposition is displayed in the equation below:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
+I(S; R_{1},R_{2}) = \underbrace{Rdn(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1})}_\text{Unique} + \underbrace{Unq(S;R_{2})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
+\end{equation}&lt;/script&gt;
+
+&lt;p&gt;Below, we can see the representation of this decomposition for two variables; intuitively &lt;script type=&quot;math/tex&quot;&gt;I(S; R_{1})&lt;/script&gt; is the mutual information between the 
+random vector S and the predictor &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/2_variables.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For three predictors we should point out that also is not only between individual predictions, but it can be also synergistic predictors, 
+such as{1}{23}.  For the synergistic information, we should consider any information that is not carried by a single predictor, 
+which can be redundant as well; for instance{12}{13} is synergistic.  As we can see below in the decomposition with 3 variables, as the number of predictors increases, 
+the combinations increases dramatically. In this case, &lt;script type=&quot;math/tex&quot;&gt;I(S; R_{1}, R_{2})&lt;/script&gt; is the mutual information between the 
+random vector S and the predictors &lt;script type=&quot;math/tex&quot;&gt;R_{1}, R_{2}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/synergy_3_latens.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;synergy&quot;&gt;Synergy&lt;/h2&gt;
+
+&lt;p&gt;Synergy arises in different fields, being a popular notion of it as how much the whole is greater than the sum of its parts. The canonical example is the 
+XOR gate (image below) where we need X1 and X2 to fully specify the value of Y. This mean that the mutual information provided jointly by X1 and 
+X2 will provide1 bit of information, whereas the mutual information provided by any of the predictors will result in 0 bits.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/xor.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Below, we display the truth tables:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/tables.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;population-coding&quot;&gt;Population Coding&lt;/h3&gt;
+
+&lt;p&gt;From the Neuroscience perspective, we know that single neurons make a small contribution to the 
+animal behaviour.  Since most of our actions involve a large number of neurons, most of neurons 
+in  the  same  region  will  have  a  similar  response,  which  is  why  the  ”population  coding”  field  is 
+interested in the relationship between the stimulus and the responses of a group of neurons.  As 
+this branch is related to the interactions of a group of neurons, it’s easy to find a close relation 
+with Information Theory. Below we see a diagram that represent how a pair of neurons 1 and 2 encode information about 
+a stimulus &lt;script type=&quot;math/tex&quot;&gt;s_{t}&lt;/script&gt; with the responses (spike trains) &lt;script type=&quot;math/tex&quot;&gt;r_{1}(t)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;r_{2}(t)&lt;/script&gt;.  Broadly speaking, the spike trains 
+are the representation of the stimulus experimented.  The process of encoding could be described 
+as the conditional probability of the responses given the stimulus &lt;script type=&quot;math/tex&quot;&gt;p(r_{1},r_{2}|s)&lt;/script&gt;.  On the other hand,the decoding 
+process uses the neural spike trains to estimate the features or representation of the 
+original stimulus.  Most  of  the  current  research  in  the  field  of  Information  Theory  was inspired  from  population coding.  In fact, it’s common to use metrics such as mutual information to measure the correlation 
+between stimulus and response, &lt;script type=&quot;math/tex&quot;&gt;I(S;R_{1},R_{2})&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/population.png&quot; alt=&quot;population coding&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;For neural codes there are three types of independence when it comes to the relation between stimuli
 and responses; which are the activity independence, the conditional independence and the information 
@@ -42,17 +97,17 @@ this notion of independence. In Williams &amp;amp; Beer (2010) it is stated that
 from different features of the stimulus, the information encoded in those responses should be added 
 to estimate the mutual information they provide about the stimulus. Formally:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/population.png&quot; alt=&quot;population coding&quot; /&gt;&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;I(S; R_{1}, R_{2}) = I(S;R_{1}) + I(S;R_{2})&lt;/script&gt;
 
 &lt;p&gt;The intuition behind this metric is that synergy should be defined as the “whole beyond the 
-maximum of its parts”. The whole is described as the mutual information between the joint $\textbf{X}$ 
+maximum of its parts”. The whole is described as the mutual information between the joint X 
 and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
-that any of the sources $\sA_{i}$ provided about each outcome. Formally, this is stated as:&lt;/p&gt;
+that any of the sources &lt;script type=&quot;math/tex&quot;&gt;\mathbb{A}_{i}&lt;/script&gt; provided about each outcome. Formally, this is stated as:&lt;/p&gt;
 
-&lt;p&gt;However, we just saw in the previous sections that theI(S;R1)andI(S;R2)could be decomposed 
+&lt;p&gt;However, we just saw in the previous sections that the &lt;script type=&quot;math/tex&quot;&gt;I(S;R_{1})&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;I(S;R_{2})&lt;/script&gt;could be decomposed 
 in their unique and redundant and synergistic terms. Intuitively, this formulation only holds if there 
 is no redundant or synergistic information present; which means in the context of population coding 
-that the responses encoded different parts of the stimulus. If the responses R1 and R2 convey more 
+that the responses encoded different parts of the stimulus. If the responses &lt;script type=&quot;math/tex&quot;&gt;R_{1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;R_{2}&lt;/script&gt; convey more 
 information together than separate, we can say we have synergistic information; if the information 
 is less, we have redundant information. That’s the reason why in Gat &amp;amp; Tishby (1998), the synergy 
 is considered as measure of information independence&lt;/p&gt;
@@ -61,7 +116,7 @@ is considered as measure of information independence&lt;/p&gt;
 Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 \end{equation}&lt;/script&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/synergy_3_latens.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;synergy-metric&quot;&gt;Synergy Metric&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;n: Number of individual predictors &lt;script type=&quot;math/tex&quot;&gt;X_{i}&lt;/script&gt;&lt;/li&gt;
@@ -101,7 +156,7 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}&lt;/script&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/traversal_mean_white.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/traversal_mean_white.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
 
@@ -123,5 +178,8 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Danilo Jimenez Rezende, Shakir Mohamed, and Daan Wierstra.   Stochastic backpropagation and approximate inference in deep generative models.  In Proceedings of the 31th International Conference on Machine Learning, ICML 2014. URL http://jmlr.org/proceedings/papers/v32/rezende14.html.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Paul L. Williams and Randall D. Beer.   Nonnegative decomposition of multivariate information. CoRR, abs/1004.2515, 2010. URLhttp://arxiv.org/abs/1004.2515.9&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><category term="generative modeling" /><category term="variational inference" /><summary type="html">Generative Modeling, Variational Inference</summary></entry></feed>

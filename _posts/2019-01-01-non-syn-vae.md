@@ -38,15 +38,68 @@ We proposed a new approach for the task of disentanglement, where we achieve sta
 information within the latents we encourage information independence and by doing that disentangle the latent factors. It is worth noting that our model draws inspiration
 from population coding, a field from neuroscience, where the notion of synergy arises.
 
-## Synergy
+## Information Theory
 
-
+First of all, we need a brief introduction to the field of information theory in order to understand the partial information decomposition, which it will lead us 
+to the importance of Synergy in our framework. First, we define the Mutual Information:
 
 $$\begin{equation}
-I(S; R_{1},R_{2}) = \underbrace{SI(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1} \setminus{R_{2}})}_\text{Unique} + \underbrace{Unq(S;R_{2} \setminus{R_{1}})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
+I(X;Y) = E_{p(x,y)} \bigg[\ \log \frac{p(x,y)}{p(x)p(y)}  \bigg]\ = K \big[\ p(x,y) \Vert p(x)p(y) \big]\
 \end{equation}$$
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/2_variables.png" alt="results">
+Now, we are going to introduce the Partial Information decomposition; following the notation from Williams & Beer (2010), let's consider the random variable S and a random vector $$R = \{R_{1}, R_{2}, .., R_{n}\}$$, being our goal to 
+decompose the information that the variable R provides about S; the contribution of these partial information 
+could come from one element (i.e. from $$R_{1}$$) or from subsets of $$R$$ (ie. $$R_{1}, R_{2}$$). Considering the case with 
+two variables, $$\{R_{1}, R_{2}\}$$, we could separate the partial mutual information in unique ($$Unq(S; R_{1})$$ 
+and $$Unq(S; R_{2})$$ ), the information that only $$R_{1}$$ or $$R_{2}$$ provides about S; redundant ($$Rdn(S; R_{1}, R_{2})$$), 
+which it could be provided by $$R_{1}$$ or $$R_{2}$$; and synergistic ($$Syn(S; R_{1}, R_{2})$$), which is only 
+provided by the combination of $$R_{1}$$ and $$R_{2}$$. This decomposition is displayed in the equation below:
+
+$$\begin{equation}
+I(S; R_{1},R_{2}) = \underbrace{Rdn(S;R_{1},R_{2})}_\text{Redundant} + \underbrace{Unq(S;R_{1})}_\text{Unique} + \underbrace{Unq(S;R_{2})}_\text{Unique} + \underbrace{Syn(S;R_{1},R_{2})}_\text{Synergistic}
+\end{equation}$$
+
+Below, we can see the representation of this decomposition for two variables; intuitively $$I(S; R_{1})$$ is the mutual information between the 
+random vector S and the predictor $$R_{1}$$
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/2_variables.png" alt="results" class="align-center">
+
+For three predictors we should point out that also is not only between individual predictions, but it can be also synergistic predictors, 
+such as{1}{23}.  For the synergistic information, we should consider any information that is not carried by a single predictor, 
+which can be redundant as well; for instance{12}{13} is synergistic.  As we can see below in the decomposition with 3 variables, as the number of predictors increases, 
+the combinations increases dramatically. In this case, $$I(S; R_{1}, R_{2})$$ is the mutual information between the 
+random vector S and the predictors $$R_{1}, R_{2}$$
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/synergy_3_latens.png" alt="results" class="align-center">
+
+## Synergy
+
+Synergy arises in different fields, being a popular notion of it as how much the whole is greater than the sum of its parts. The canonical example is the 
+XOR gate (image below) where we need X1 and X2 to fully specify the value of Y. This mean that the mutual information provided jointly by X1 and 
+X2 will provide1 bit of information, whereas the mutual information provided by any of the predictors will result in 0 bits.
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/xor.png" alt="results" class="align-center">
+
+Below, we display the truth tables:
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/tables.png" alt="results" class="align-center">
+
+### Population Coding
+
+From the Neuroscience perspective, we know that single neurons make a small contribution to the 
+animal behaviour.  Since most of our actions involve a large number of neurons, most of neurons 
+in  the  same  region  will  have  a  similar  response,  which  is  why  the  ”population  coding”  field  is 
+interested in the relationship between the stimulus and the responses of a group of neurons.  As 
+this branch is related to the interactions of a group of neurons, it’s easy to find a close relation 
+with Information Theory. Below we see a diagram that represent how a pair of neurons 1 and 2 encode information about 
+a stimulus $$s_{t}$$ with the responses (spike trains) $$r_{1}(t)$$ and $$r_{2}(t)$$.  Broadly speaking, the spike trains 
+are the representation of the stimulus experimented.  The process of encoding could be described 
+as the conditional probability of the responses given the stimulus $$p(r_{1},r_{2}|s)$$.  On the other hand,the decoding 
+process uses the neural spike trains to estimate the features or representation of the 
+original stimulus.  Most  of  the  current  research  in  the  field  of  Information  Theory  was inspired  from  population coding.  In fact, it’s common to use metrics such as mutual information to measure the correlation 
+between stimulus and response, $$I(S;R_{1},R_{2})$$.
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/population.png" alt="population coding">
 
 For neural codes there are three types of independence when it comes to the relation between stimuli
 and responses; which are the activity independence, the conditional independence and the information 
@@ -55,18 +108,17 @@ this notion of independence. In Williams & Beer (2010) it is stated that if the 
 from different features of the stimulus, the information encoded in those responses should be added 
 to estimate the mutual information they provide about the stimulus. Formally:
 
-
-<img src="{{ site.url }}{{ site.baseurl }}/images/population.png" alt="population coding">
+$$I(S; R_{1}, R_{2}) = I(S;R_{1}) + I(S;R_{2})$$
 
 The intuition behind this metric is that synergy should be defined as the "whole beyond the 
-maximum of its parts". The whole is described as the mutual information between the joint $\textbf{X}$ 
+maximum of its parts". The whole is described as the mutual information between the joint X 
 and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
-that any of the sources $\sA_{i}$ provided about each outcome. Formally, this is stated as:
+that any of the sources $$\mathbb{A}_{i}$$ provided about each outcome. Formally, this is stated as:
 
-However, we just saw in the previous sections that theI(S;R1)andI(S;R2)could be decomposed 
+However, we just saw in the previous sections that the $$I(S;R_{1})$$ and $$I(S;R_{2})$$could be decomposed 
 in their unique and redundant and synergistic terms. Intuitively, this formulation only holds if there 
 is no redundant or synergistic information present; which means in the context of population coding 
-that the responses encoded different parts of the stimulus. If the responses R1 and R2 convey more 
+that the responses encoded different parts of the stimulus. If the responses $$R_{1}$$ and $$R_{2}$$ convey more 
 information together than separate, we can say we have synergistic information; if the information 
 is less, we have redundant information. That’s the reason why in Gat & Tishby (1998), the synergy 
 is considered as measure of information independence
@@ -75,11 +127,7 @@ $$\begin{equation}
 Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 \end{equation}$$
 
-
-<img src="{{ site.url }}{{ site.baseurl }}/images/synergy_3_latens.png" alt="results">
-
-
-
+### Synergy Metric
 
 * n: Number of individual predictors $$X_{i}$$
 * $$\mathbb{A}_{i}$$ : subset of individual predictors (ie. $$A_{i} = \{X_{1},X_{3}\}$$)
@@ -120,7 +168,7 @@ $$\begin{align}
 
 $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/traversal_mean_white.png" alt="results">
+<img src="{{ site.url }}{{ site.baseurl }}/images/traversal_mean_white.png" alt="results" class="align-center">
 
 ## References:
 
@@ -135,3 +183,5 @@ $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \
 * Yoshua Bengio, Aaron C. Courville, and Pascal Vincent.   Representation learning:  A review and new perspectives.IEEE Trans. Pattern Anal. Mach. Intell.,  35(8):1798–1828,  2013.
 
 * Danilo Jimenez Rezende, Shakir Mohamed, and Daan Wierstra.   Stochastic backpropagation and approximate inference in deep generative models.  In Proceedings of the 31th International Conference on Machine Learning, ICML 2014. URL http://jmlr.org/proceedings/papers/v32/rezende14.html.
+
+* Paul L. Williams and Randall D. Beer.   Nonnegative decomposition of multivariate information. CoRR, abs/1004.2515, 2010. URLhttp://arxiv.org/abs/1004.2515.9
