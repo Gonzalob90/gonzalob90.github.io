@@ -187,11 +187,33 @@ Expanding the Synergy term:
 
 $$\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) - \alpha ( I(z; x) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\ ) $$
 
+Analysing the equation above, we notice that the new loss function is penalising the mutual information $$I(z;x)$$, 
+which is not desirable nor necessary for disentangling according to Hoffman (2016), since doing this will reduce the 
+amount of information that the latents contain about the data which will result in poor reconstruction.
+
+We can define the expectation over the empirical data distribution of the posterior as stated in (Hoffman, 2016), called the aggregate posterior:
+
+$$q(z) = E_{p_{data}(x)}[q_{\phi}(z | x)] = \frac{1}{N} \sum_{i=1}^{N}q_{\phi}(z | x^{(i)})$$
+
+Using that definition (Hoffman, 2016) it decomposes the expectation over the empirical distribution of KL divergence term from the original ELBO as follows:
+
+$$\frac{1}{N} \sum_{n=1}^{N}\ KL \big[\ q_{\phi}(z_{n} | x_{n}) \Vert p(z_{n}) \big]\ = KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ + I(x_{n};z)$$
+
+If we decide to minimise the synergy using the definition above, we will be trying to penalise the mutual information term 
+(the first term of the synergy $$S_{max}$$). Therefore, to overcome this situation we should maximise the second term of the 
+synergy $$S_{max}$$. By doing this, we will be indirectly minimising the synergy, considering that the mutual information 
+term (first component of $$S_{max})$$ is provided by the second term of the KL decomposition. 
+
+$$\mathcal{L}_{elbo}(\theta,\phi,x) = \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - \bigg(\ KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n} \big]\ + I(x_{n};z) \bigg)$$
+
+Now combining this with our new loss function that includes the synergy term, we have the following:
 
 $$\begin{align}
 \mathcal{L}_{new}(\theta,\phi,x) &= \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \nonumber \\
 & \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\mathbb{A}_{i} | x){p(\mathbb{A}_{i})}) 
 \end{align}$$
+
+Finally, the lost function we are going to use is the following:
 
 $$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
@@ -233,3 +255,5 @@ B-VAE and Factor VAE.
 * Danilo Jimenez Rezende, Shakir Mohamed, and Daan Wierstra.   Stochastic backpropagation and approximate inference in deep generative models.  In Proceedings of the 31th International Conference on Machine Learning, ICML 2014. URL http://jmlr.org/proceedings/papers/v32/rezende14.html.
 
 * Paul L. Williams and Randall D. Beer.   Nonnegative decomposition of multivariate information. CoRR, abs/1004.2515, 2010. URLhttp://arxiv.org/abs/1004.2515.9
+
+* Matthew D Hoffman and Matthew J Johnson.  Elbo surgery: yet another way to carve up the variational evidence lower bound. In Workshop in Advances in Approximate Bayesian Inference, NIPS,2016.
