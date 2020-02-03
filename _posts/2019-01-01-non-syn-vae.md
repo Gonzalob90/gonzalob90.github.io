@@ -177,6 +177,24 @@ We change the Synergy metric taking in account the intractability issue:
 $$S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X) = I(Z; X) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\ $$
 
 
+Our model consists on augmenting the VAE objective with our Synergy metric. Since we want to minimise the synergistic mutual information, we start with the following expression:
+
+$$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
+
+$$\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) - \alpha S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X) $$
+
+Expanding the Synergy term:
+
+$$\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) - \alpha ( I(z; x) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\ ) $$
+
+
+$$\begin{align}
+\mathcal{L}_{new}(\theta,\phi,x) &= \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \nonumber \\
+& \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\mathbb{A}_{i} | x){p(\mathbb{A}_{i})}) 
+\end{align}$$
+
+$$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
+
 ```python
 def i_max(indices, mu, log_var):
 
@@ -187,15 +205,6 @@ def i_max(indices, mu, log_var):
     return i_max
 ```
 
-
-$$\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\$$
-
-$$\begin{align}
-\mathcal{L}_{new}(\theta,\phi,x) &= \frac{1}{N}\sum^{N}_{i=1} \bigg[\ E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x^{(i)} | z) \big]\ \bigg]\ - KL \big[\ q_{\phi}(z_{n}) \Vert p(z_{n}) \big]\ - I(x_{n};z) \nonumber \\
-& \underbrace{- \alpha I(x_{n};z)}_\text{Penalise} + \alpha \sum_{x \in X} p(X=x) \max_{i} KL \big[\ q_{\phi}(\mathbb{A}_{i} | x){p(\mathbb{A}_{i})}) 
-\end{align}$$
-
-$$\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}$$
 
 One of the ways to verify visually if the model disentangles the factors of variation is traversing 
 the latent variables.  The process consists on traversing each dimension of the latent variable along 

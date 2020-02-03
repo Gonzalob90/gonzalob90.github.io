@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-02-03T09:38:41+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-02-03T09:44:31+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
 
 &lt;p&gt;Github (Reproduce results): &lt;a href=&quot;https://github.com/Gonzalob90/non-synergistic-vae&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
 
@@ -169,16 +169,15 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X) = I(Z; X) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\&lt;/script&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;i_max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kl_div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Our model consists on augmenting the VAE objective with our Synergy metric. Since we want to minimise the synergistic mutual information, we start with the following expression:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) - \alpha S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X)&lt;/script&gt;
+
+&lt;p&gt;Expanding the Synergy term:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}(\theta,\phi,x) = \mathcal{L}_{elbo}(\theta,\phi,x) - \alpha ( I(z; x) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\ )&lt;/script&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
@@ -187,6 +186,15 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}&lt;/script&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;i_max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kl_div&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mu_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var_syn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;One of the ways to verify visually if the model disentangles the factors of variation is traversing 
 the latent variables.  The process consists on traversing each dimension of the latent variable along 
