@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-02-03T08:52:23+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-02-03T09:38:41+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Gonzalo Barrientos</title><subtitle>Machine Learning Engineer Portfolio.</subtitle><author><name>Gonzalo Barrientos</name><email>gonzalo.b90@gmail.com</email></author><entry><title type="html">Non-Synergistic Variational Auto-Encoders</title><link href="http://localhost:4000/non-syn-vae/" rel="alternate" type="text/html" title="Non-Synergistic Variational Auto-Encoders" /><published>2019-01-01T00:00:00+00:00</published><updated>2019-01-01T00:00:00+00:00</updated><id>http://localhost:4000/non-syn-vae</id><content type="html" xml:base="http://localhost:4000/non-syn-vae/">&lt;h3 id=&quot;work-presented-at-neurips-2018-workshop-latinx-in-ai&quot;&gt;Work presented at NeurIPS 2018, Workshop LatinX in AI&lt;/h3&gt;
+
+&lt;p&gt;Github (Reproduce results): &lt;a href=&quot;https://github.com/Gonzalob90/non-synergistic-vae&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Our world is hierarchical and compositional, humans can generalise better since we use primitive
 concepts that allow us to create complex representations (Higgins et al. (2016)).&lt;br /&gt;
@@ -99,11 +101,6 @@ to estimate the mutual information they provide about the stimulus. Formally:&lt
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;I(S; R_{1}, R_{2}) = I(S;R_{1}) + I(S;R_{2})&lt;/script&gt;
 
-&lt;p&gt;The intuition behind this metric is that synergy should be defined as the “whole beyond the 
-maximum of its parts”. The whole is described as the mutual information between the joint X 
-and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
-that any of the sources &lt;script type=&quot;math/tex&quot;&gt;\mathbb{A}_{i}&lt;/script&gt; provided about each outcome. Formally, this is stated as:&lt;/p&gt;
-
 &lt;p&gt;However, we just saw in the previous sections that the &lt;script type=&quot;math/tex&quot;&gt;I(S;R_{1})&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;I(S;R_{2})&lt;/script&gt;could be decomposed 
 in their unique and redundant and synergistic terms. Intuitively, this formulation only holds if there 
 is no redundant or synergistic information present; which means in the context of population coding 
@@ -127,11 +124,50 @@ Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
   &lt;li&gt;y: A particular outcome of Y.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
+&lt;p&gt;The intuition behind this metric is that synergy should be defined as the “whole beyond the 
+maximum of its parts”. The whole is described as the mutual information between the joint X 
+and the outcome Y; whereas the maximum of all the possible subsets is interpreted as the maximum information 
+that any of the sources &lt;script type=&quot;math/tex&quot;&gt;\mathbb{A}_{i}&lt;/script&gt; provided about each outcome. Formally, this is stated as:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(A_{i} | y) \Vert P(A_{i}) \big]\&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+  S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) &amp;= I(X; Y) - I_{max}(\{\mathbb{A}_{1}, \mathbb{A}_{2} .. \mathbb{A}_{n}\};Y)\\
+                  &amp;= I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i}I(\mathbb{A}_{i};Y=y)
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;As we know, we can express the mutual information (I(X,Y)) as a KL divergence:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;I(\mathbb{A}_{i};Y=y) = \sum_{a_{i} \in \mathbb{A}_{i}} P(a_{i} | y) \log  \frac{P(a_{i},y)}{P(a_{i})P(y)} = KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\&lt;/script&gt;
+
+&lt;p&gt;Combining the last two equations above, we define our Synergy metric as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{X_{1},X_{2},...,X_{n}\};Y) = I(X; Y) - \sum_{y \in Y} p(Y=y) \max_{i} KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\&lt;/script&gt;
+
+&lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
+
+&lt;p&gt;Our hypothesis is that minimising synergistic information should encourage disentanglement of the factors of variation, we chose the 
+overestimation of the synergy. First, we change the notation to match the VAE framework notation (Z is the joint of latents and X is the observations), 
+the metric is the following:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X) = I(Z; X) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ P(\mathbb{A}_{i} | y) \Vert P(\mathbb{A}_{i}) \big]\&lt;/script&gt;
+
+&lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;A_{i}&lt;/script&gt; is a subset of the latents, such that &lt;script type=&quot;math/tex&quot;&gt;A_{i} \in \{Z_{1},Z_{2},...,Z_{n}\}&lt;/script&gt; and Z is the joint of the latents. Formally: &lt;script type=&quot;math/tex&quot;&gt;Z = \prod_{i}^{d} Z_{i}&lt;/script&gt;, where d is the number of latents.&lt;/p&gt;
+
+&lt;p&gt;Following the Variational Auto-encoder Framework, and assuming that the value of z is generated by a parametrised prior distribution &lt;script type=&quot;math/tex&quot;&gt;p_{\theta}(z)&lt;/script&gt; and x 
+from the distribution &lt;script type=&quot;math/tex&quot;&gt;p_{\theta}(x|z)&lt;/script&gt;, we recognise the intractability problem,  which is why we need to use an approximate distribution &lt;script type=&quot;math/tex&quot;&gt;q_{\phi}(x | z)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is important to notice that this KL divergence could be computed in the same way as in the VAE framework; 
+the only difference is the number of dimensions used for the random variable z.  In the  original  VAE  framework, 
+we  compute  the  KL  divergence  considering  the  joint &lt;script type=&quot;math/tex&quot;&gt;Z = \prod_{i}^{d} Z_{i}&lt;/script&gt;; whereas for the Synergy metric we don’t use the 
+joint but a subset of the latents.  For instance, if &lt;script type=&quot;math/tex&quot;&gt;A_{i}=Z_{2}Z_{5}Z_{8}&lt;/script&gt;, we have the following expression:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
+KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
+\end{equation}&lt;/script&gt;
+
+&lt;p&gt;We change the Synergy metric taking in account the intractability issue:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{max}(\{Z_{1},Z_{2},...,Z_{d}\};X) = I(Z; X) - \sum_{x \in X} p(X=x) \max_{i} KL \big[\ p(\mathbb{A}_{i} | y) \Vert q_{\phi}(\mathbb{A}_{i}) \big]\&lt;/script&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;i_max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;indices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log_var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
 
@@ -141,10 +177,6 @@ Syn(R_{1}, R_{2}) = I(S; R_{1}, R_{2}) - I(S;R_{1}) - I(S;R_{2})
 
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i_max&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{equation}
-KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
-\end{equation}&lt;/script&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{elbo}(\theta,\phi,x) =  E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}(x | z) \big]\ - KL \big[\ q_{\phi}(z | x) \Vert p(z) \big]\&lt;/script&gt;
 
@@ -156,7 +188,17 @@ KL \big[\ q_{\phi}(z_{2}z_{5}z_{8} | x) \Vert p(z_{2}z_{5}z_{8}) \big]\
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{new}( \theta,\phi,x ) =  \underbrace{E_{q_{\phi}(z | x)} \big[\ \log p_{\theta}( x | z ) \big]\ - KL \big[\ q_{\phi}( z | x) \Vert p (z)\big]\ }_{\mathcal{L}_{elbo}}- \underbrace{\alpha KL \big[\ q_{\phi}(\mathbb{A}_{worst} | x) \Vert p(\mathbb{A}_{worst})\big]\ }_{\alpha*\text{Imax}}&lt;/script&gt;
 
+&lt;p&gt;One of the ways to verify visually if the model disentangles the factors of variation is traversing 
+the latent variables.  The process consists on traversing each dimension of the latent variable along 
+five standard deviations around the unit Gaussian mean while keeping the rest of the dimensions 
+constant.  This is consistent with the definition of disentanglement, which states that we should 
+be able to change one factor of variation without affecting the other factors. On the left, we can see the traversal for this model after 1e6 steps.
+Likewise,on the right we see the mean activation of each active latent averaged across shapes, rotations and scales.&lt;/p&gt;
+
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/traversal_mean_white.png&quot; alt=&quot;results&quot; class=&quot;align-center&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As we can see, our model is able to disentangle the latents (X axis, y axis, two rotation and scale); which matches with the results of state-of-the-art models such as 
+B-VAE and Factor VAE.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
 
